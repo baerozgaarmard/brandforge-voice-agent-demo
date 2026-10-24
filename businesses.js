@@ -5,7 +5,6 @@ window.BUSINESSES = {
   dental: {
     id: "dental",
     label: "Dental Clinic",
-    icon: "🦷",
     name: "BrightSmile Dental",
     city: "Austin, Texas",
     phoneDisplay: "(512) 555-0142",
@@ -22,12 +21,11 @@ window.BUSINESSES = {
     greeting: "Thank you for calling BrightSmile Dental in Austin, Texas. This is Alex, how can I help you today?",
     confirm: "You're all set! Your appointment at BrightSmile Dental is confirmed. We'll send a text reminder to your phone before your visit.",
     chips: ["I'd like to book a cleaning", "What are your hours?", "How much is teeth whitening?", "Where are you located?", "I have a toothache, it's urgent"],
-    clips: { greetingF: "audio/greeting-dental-f.mp3", greetingM: "audio/greeting-dental-m.mp3", confirmF: "audio/confirm-dental-f.mp3" }
+    clips: { greetingF: "audio/greeting-dental-f.mp3", greetingM: "audio/greeting-dental-m.mp3", faqF: "audio/faq-dental-f.mp3", faqM: "audio/faq-dental-m.mp3", menuF: "audio/menu-dental-f.mp3", menuM: "audio/menu-dental-m.mp3" }
   },
   hvac: {
     id: "hvac",
     label: "HVAC / Home Services",
-    icon: "🛠️",
     name: "CoolAir Home Services",
     city: "Dallas, Texas",
     phoneDisplay: "(214) 555-0187",
@@ -44,12 +42,11 @@ window.BUSINESSES = {
     greeting: "Thank you for calling CoolAir Home Services in Dallas, Texas. This is Alex, how can I help you today?",
     confirm: "You're all set! Your service visit with CoolAir Home Services is confirmed. Our technician will call you thirty minutes before arrival.",
     chips: ["My AC stopped cooling", "What are your hours?", "How much is a tune-up?", "Do you cover my area?", "I need someone urgently"],
-    clips: { greetingF: "audio/greeting-hvac-f.mp3", greetingM: "audio/greeting-hvac-m.mp3", confirmF: "audio/confirm-hvac-f.mp3" }
+    clips: { greetingF: "audio/greeting-hvac-f.mp3", greetingM: "audio/greeting-hvac-m.mp3", faqF: "audio/faq-hvac-f.mp3", faqM: "audio/faq-hvac-m.mp3", menuF: "audio/menu-hvac-f.mp3", menuM: "audio/menu-hvac-m.mp3" }
   },
   realestate: {
     id: "realestate",
     label: "Real Estate",
-    icon: "🏡",
     name: "HarborView Realty",
     city: "Miami, Florida",
     phoneDisplay: "(305) 555-0119",
@@ -65,12 +62,11 @@ window.BUSINESSES = {
     greeting: "Thank you for calling HarborView Realty in Miami, Florida. This is Alex, how can I help you today?",
     confirm: "You're all set! Your request with HarborView Realty is confirmed. An agent will text you shortly to confirm the details.",
     chips: ["I'd like to book a viewing", "What are your hours?", "I want to sell my house", "Do you have rentals?", "Where are you based?"],
-    clips: { greetingF: "audio/greeting-realestate-f.mp3", greetingM: "audio/greeting-realestate-m.mp3", confirmF: "audio/confirm-realestate-f.mp3" }
+    clips: { greetingF: "audio/greeting-realestate-f.mp3", greetingM: "audio/greeting-realestate-m.mp3", faqF: "audio/faq-realestate-f.mp3", faqM: "audio/faq-realestate-m.mp3", menuF: "audio/menu-realestate-f.mp3", menuM: "audio/menu-realestate-m.mp3" }
   },
   salon: {
     id: "salon",
     label: "Salon / Med Spa",
-    icon: "💇",
     name: "Glow Studio Salon & Med Spa",
     city: "Los Angeles, California",
     phoneDisplay: "(310) 555-0163",
@@ -87,6 +83,6 @@ window.BUSINESSES = {
     greeting: "Thank you for calling Glow Studio Salon and Med Spa in Los Angeles. This is Alex, how can I help you today?",
     confirm: "You're all set! Your appointment at Glow Studio is confirmed. We'll send a text reminder before your visit.",
     chips: ["I'd like to book a haircut", "What are your hours?", "How much is a facial?", "Where are you located?", "Do you do balayage?"],
-    clips: { greetingF: "audio/greeting-salon-f.mp3", greetingM: "audio/greeting-salon-m.mp3", confirmF: "audio/confirm-salon-f.mp3" }
+    clips: { greetingF: "audio/greeting-salon-f.mp3", greetingM: "audio/greeting-salon-m.mp3", faqF: "audio/faq-salon-f.mp3", faqM: "audio/faq-salon-m.mp3", menuF: "audio/menu-salon-f.mp3", menuM: "audio/menu-salon-m.mp3" }
   }
 };
