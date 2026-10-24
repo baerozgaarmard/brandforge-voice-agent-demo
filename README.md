@@ -2,7 +2,7 @@
 
 **Headline USP:** “An AI receptionist that answers in YOUR voice.”
 
-**Live demo:** _to be filled in after Vercel deployment_
+**Live demo:** https://brandforge-voice-agent-demo.vercel.app/
 
 ## Features
 - 4 ready-to-test US business scenarios: dental clinic, HVAC/home services, real estate, salon/med spa — each with its own services, prices, hours and FAQs
@@ -49,4 +49,4 @@ Own-voice card: the visitor reads a ~30-sec script, records via MediaRecorder, a
 - Agent replies are rule/keyword-based for the 4 scripted businesses, not a live LLM.
 - Mic input/output quality depends on the visitor's browser (Chrome best); typed input always works.
 - Own-voice cloning does **not** happen in this demo — recording + playback only, labelled as such in the UI.
-- Not deployed publicly; parent can deploy the folder statically (e.g. Vercel) when Ayush wants it live.
+- Deployed live on Vercel (24 Oct 2026): https://brandforge-voice-agent-demo.vercel.app/ — GitHub repo: https://github.com/baerozgaarmard/brandforge-voice-agent-demo
