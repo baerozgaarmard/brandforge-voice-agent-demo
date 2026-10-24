@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BrandForge Voice Agent — An AI Receptionist That Answers in YOUR Voice</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><span class="logo">BF</span> BrandForge <span class="dim">Media</span></div>
+  <div class="topbar-tag">AI Voice Calling Agents for US Businesses</div>
+</header>
+
+<section class="hero">
+  <h1>An AI receptionist that answers in <span class="gold">YOUR voice.</span></h1>
+  <p class="sub">Pick a business below and try a live call. Ask about hours, prices, or book an appointment — the agent answers, books you in, and the owner sees the lead instantly. In the full build, it can answer in a ready natural voice — or in <strong>your own cloned voice</strong>.</p>
+  <div class="how-strip">
+    <div class="how"><strong>24/7</strong><span>Answers every call, even after hours</span></div>
+    <div class="how"><strong>Books for you</strong><span>Collects name, number &amp; time, confirms the booking</span></div>
+    <div class="how"><strong>Zero missed calls</strong><span>Every caller becomes a captured lead</span></div>
+  </div>
+</section>
+
+<main class="layout">
+  <!-- LEFT: setup -->
+  <section class="panel">
+    <h2>1 · Pick a business</h2>
+    <div id="bizPicker" class="biz-grid"></div>
+    <div id="bizProfile" class="biz-profile"></div>
+
+    <h2>2 · Pick a voice</h2>
+    <div id="voicePicker" class="voice-list"></div>
+
+    <div class="own-voice-card">
+      <div class="own-badge">MAIN USP</div>
+      <h3>⭐ YOUR OWN VOICE</h3>
+      <p>Customers trust a voice they know. Record about 30 seconds below — <strong>in the full build, this sample becomes your agent's voice</strong>, so your AI receptionist literally sounds like you. This demo only records and plays your sample back (the enrolment step) — no cloning happens in this demo.</p>
+      <p class="read-script"><em>Read this:</em> “Hi, thanks for calling my business. I'm not at the phone right now, but tell me what you need — an appointment, a quote, or a question — and I'll take care of it right away.”</p>
+      <div class="rec-row">
+        <button id="recBtn" class="btn small">● Record my voice</button>
+        <button id="recStopBtn" class="btn small ghost" disabled>■ Stop</button>
+        <span id="recStatus" class="dim small-text">Not recorded yet</span>
+      </div>
+      <audio id="recPlayback" controls class="hidden"></audio>
+    </div>
+
+    <h2>3 · Hear pre-made voice samples</h2>
+    <p class="dim small-text">Studio-quality greetings &amp; booking confirmations, generated for each business in two ready voices:</p>
+    <div id="clipList" class="clip-list"></div>
+  </section>
+
+  <!-- CENTER: call -->
+  <section class="panel call-panel">
+    <h2>Try the call</h2>
+    <div class="phone-head">
+      <div><div id="callBizName" class="phone-biz">—</div><div id="callStatus" class="dim small-text">Not started — press Start Call</div></div>
+      <button id="startBtn" class="btn">▶ Start Call</button>
+      <button id="resetBtn" class="btn ghost hidden">↺ Restart</button>
+    </div>
+    <div id="transcript" class="transcript" aria-live="polite"></div>
+    <div id="chips" class="chips"></div>
+    <div class="input-row">
+      <button id="micBtn" class="btn ghost" title="Speak (uses your browser microphone)">🎤</button>
+      <input id="userInput" type="text" placeholder="Type what a customer would say… e.g. I'd like to book a cleaning" disabled>
+      <button id="sendBtn" class="btn" disabled>Send</button>
+    </div>
+    <p class="dim small-text">Mic uses your browser's speech recognition where available (Chrome works best). Typing always works. Agent voice uses your browser's built-in voices.</p>
+  </section>
+
+  <!-- RIGHT: owner view -->
+  <aside class="panel owner">
+    <h2>Business Owner View</h2>
+    <p class="dim small-text">This is what the owner gets the second a call ends — no enquiry lost in a missed call.</p>
+    <div class="owner-status" id="ownerStatus">Waiting for a call…</div>
+    <dl class="lead">
+      <dt>Caller name</dt><dd id="leadName">—</dd>
+      <dt>Phone</dt><dd id="leadPhone">—</dd>
+      <dt>Service</dt><dd id="leadService">—</dd>
+      <dt>Preferred time</dt><dd id="leadTime">—</dd>
+      <dt>Booking</dt><dd id="leadBooking">Not booked</dd>
+    </dl>
+    <h3>Call transcript</h3>
+    <pre id="ownerTranscript" class="owner-transcript">No calls yet.</pre>
+    <button id="copyBtn" class="btn small ghost" disabled>Copy lead summary</button>
+  </aside>
+</main>
+
+<footer>
+  <p><strong>BrandForge Media</strong> — AI voice agents, websites &amp; automations. Demo note: this is a web simulation of the agent experience (no real phone line). A paid build connects it to your real business number, calendar, and your cloned voice.</p>
+</footer>
+
+<script src="businesses.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
