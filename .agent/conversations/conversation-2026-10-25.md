@@ -7,29 +7,24 @@
 ---
 
 ## 🎯 Intent
-Redesign the banner visual to eliminate artificial "AI slop" (fake terminal chrome, neon gradient glow, tacky chat bubble cards, and emojis), replacing it with an ultra-clean, minimalist developer-grade product header.
+Resolve GitHub Camo CDN image caching by migrating `banner.svg` to `header.svg` and updating documentation links, forcing GitHub's proxy to immediately display the redesigned minimalist visual.
 
 ---
 
 ## 🔑 Key Decisions Made
-1. **Banner Redesign (`docs/assets/banner.svg`)**:
-   - Stripped away all fake UI artifacts: removed the fake Mac window chrome (red/yellow/green dots), glowing filters (`feGaussianBlur`), fake chat bubble rectangles, and neon gradients.
-   - Designed a restrained, high-craft brand header:
-     - Background: Solid dark canvas (`#0d1117`) matching GitHub native dark mode.
-     - Icon: Clean, symmetrical acoustic vertical bars in subtle forest greens and muted slate.
-     - Typography: Clean GitHub system sans-serif font stack with balanced hierarchy.
-     - Subtitle & Verticals: Crisp, understated single-line descriptions with subtle bullet dividers (`·`).
-2. **README Polish (`README.md`)**:
-   - Streamlined the center hero layout to seamlessly match the new minimalist header.
+1. **GitHub Camo CDN Cache-Bust**:
+   - Renamed `docs/assets/banner.svg` ➔ `docs/assets/header.svg`.
+   - Updated `README.md` image embed to point to `docs/assets/header.svg`.
+   - Because GitHub caches images by URL hash indefinitely on `camo.githubusercontent.com`, changing the URL path forces GitHub to ingest the new SVG file immediately.
 
 ---
 
 ## 📂 Files Modified
-- `docs/assets/banner.svg`: Completely rebuilt from fake-card slop into a clean, restrained vector brand header.
-- `README.md`: Refined hero header alignment.
-- `.agent/conversations/conversation-2026-10-25.md`: Updated change history.
+- `docs/assets/header.svg` *(Renamed from banner.svg)*: Clean vector header asset.
+- `README.md`: Updated image reference to `header.svg`.
+- `.agent/conversations/conversation-2026-10-25.md`: Updated change log.
 
 ---
 
 ## ⏩ Next Steps
-- Commit and push to `origin main`.
+- Commit and push changes to `origin main`.

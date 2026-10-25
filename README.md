@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="docs/assets/banner.svg" alt="BrandForge AI Voice Agent Banner" width="100%" />
+<img src="docs/assets/header.svg" alt="BrandForge AI Voice Agent Header" width="100%" />
 
 <br/>
 
@@ -235,7 +235,7 @@ Every commit and pull request triggers [`.github/workflows/verify.yml`](.github/
 │   ├── auditions/           # Reference candidate vocal takes & test renders
 ├── docs/                    # Documentation visual assets & banners
 │   └── assets/
-│       └── banner.svg       # Vector repository banner
+│       └── header.svg       # Clean vector repository header
 ├── app.js                   # Dialogue state machine, speech recognition & playback engine
 ├── businesses.js            # Business profiles, service catalogs, keywords & audio mappings
 ├── index.html               # Clean, accessible single-page layout
