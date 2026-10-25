@@ -35,16 +35,25 @@
   function voiceSuffix() { return state.voiceChoice === "male" ? "m" : "f"; } // "own" demo plays the female voice
   function clipSrc(key) {
     if (GENERIC_CLIPS.indexOf(key) !== -1) return "audio/flow-" + key + "-" + voiceSuffix() + ".mp3";
-    var clips = BIZ[state.bizId].clips; // keys: greeting | faq | menu  with F/M suffix in data
+    var clips = BIZ[state.bizId].clips; // keys: greeting | faq | menu with F/M suffix in data
     return clips[key + (voiceSuffix() === "f" ? "F" : "M")];
   }
+  function setWaveActive(active) {
+    var w = $("waveVisualizer");
+    if (w) w.classList.toggle("hidden", !active);
+  }
   function playNext() {
-    if (!audioQueue.length) { currentAudio = null; return; }
+    if (!audioQueue.length) {
+      currentAudio = null;
+      setWaveActive(false);
+      return;
+    }
     var src = audioQueue.shift();
     try {
       currentAudio = new Audio(src);
-      currentAudio.onended = playNext;
-      currentAudio.onerror = playNext;
+      setWaveActive(true);
+      currentAudio.onended = function () { playNext(); };
+      currentAudio.onerror = function () { playNext(); };
       var p = currentAudio.play();
       if (p && typeof p.catch === "function") p.catch(function () { playNext(); });
     } catch (e) { playNext(); }
@@ -60,6 +69,7 @@
       try { currentAudio.onended = null; currentAudio.onerror = null; currentAudio.pause(); } catch (e) {}
       currentAudio = null;
     }
+    setWaveActive(false);
   }
 
   /* ---------- Business tabs ---------- */
@@ -182,7 +192,33 @@
     $("callStatus").textContent = "Call complete — appointment confirmed";
     updateStatusDot("done");
     updateAppt();
+
+    // Trigger Owner SMS alert & CRM payload
+    var alertEl = $("ownerAlert");
+    if (alertEl) {
+      $("ownerAlertText").textContent = "New Booking: " + (state.lead.name || "Customer") + " • " + (state.lead.service || "Appointment") + " • " + (state.lead.time || "Scheduled") + " • Confirmation sent to " + (state.lead.phone || "provided phone") + ".";
+      alertEl.classList.remove("hidden");
+    }
+    var crmJsonEl = $("crmJson");
+    if (crmJsonEl) {
+      var payload = {
+        event: "appointment.booked",
+        business: b.name,
+        vertical: b.label,
+        location: b.city,
+        lead: {
+          name: state.lead.name,
+          phone: state.lead.phone,
+          service: state.lead.service,
+          appointment_time: state.lead.time
+        },
+        source: "BrandForge Voice Agent",
+        timestamp: new Date().toISOString()
+      };
+      crmJsonEl.textContent = JSON.stringify(payload, null, 2);
+    }
   }
+
   function handleUser(text) {
     if (!text.trim()) return;
     if (state.stage === "idle" || state.stage === "ended") return;
@@ -192,8 +228,6 @@
     var svc = detectService(b, text);
 
     // FAQ can be answered at any point, then resume the flow.
-    // Voice: one combined key-info clip per business (hours + location + prices);
-    // the exact answer to the question asked is shown on screen.
     if (faq) {
       agentSay(faqAnswer(b, faq, svc), ["faq"]);
       if (state.stage === "reason") { if (state.lead.service) askFor("name"); else agentSay("Would you like to book an appointment? Just tell me what you need.", ["menu"]); }
@@ -259,6 +293,22 @@
     dot.className = "status-dot" + (mode ? " " + mode : "");
   }
 
+  function renderChips() {
+    var b = BIZ[state.bizId];
+    var container = $("chipsContainer");
+    var chipsWrap = $("quickChips");
+    if (!container || !chipsWrap || !b.chips || !b.chips.length) return;
+    container.innerHTML = b.chips.map(function (c) {
+      return '<button class="chip" type="button">' + c.replace(/</g, "&lt;") + '</button>';
+    }).join("");
+    Array.prototype.forEach.call(container.querySelectorAll(".chip"), function (btn) {
+      btn.addEventListener("click", function () {
+        handleUser(btn.textContent);
+      });
+    });
+    chipsWrap.classList.remove("hidden");
+  }
+
   /* ---------- Call lifecycle ---------- */
   function setCallUI(active) {
     inputEl.disabled = !active;
@@ -277,6 +327,9 @@
     setCallUI(false);
     updateStatusDot("");
     $("callStatus").textContent = "Not started";
+    var alertEl = $("ownerAlert"); if (alertEl) alertEl.classList.add("hidden");
+    var crmModal = $("crmModal"); if (crmModal) crmModal.classList.add("hidden");
+    var chipsEl = $("quickChips"); if (chipsEl) chipsEl.classList.add("hidden");
     updateAppt();
   }
   function startCall() {
@@ -286,6 +339,7 @@
     setCallUI(true);
     $("callStatus").textContent = "Live call (simulated) — you are the customer";
     agentSay(b.greeting, ["greeting"]);
+    renderChips();
     updateAppt();
   }
   function endCall() {
@@ -294,6 +348,7 @@
     setCallUI(false);
     updateStatusDot("");
     $("callStatus").textContent = "Call ended";
+    var chipsEl = $("quickChips"); if (chipsEl) chipsEl.classList.add("hidden");
     updateAppt();
   }
   $("startBtn").addEventListener("click", startCall);
@@ -301,7 +356,32 @@
   $("sendBtn").addEventListener("click", function () { var v = inputEl.value; inputEl.value = ""; handleUser(v); });
   inputEl.addEventListener("keydown", function (e) { if (e.key === "Enter") $("sendBtn").click(); });
 
-  /* ---------- Mic input (Web Speech API recognition — caller's voice, not the agent's) ---------- */
+  /* ---------- Voice preview audition ---------- */
+  $("previewVoiceBtn").addEventListener("click", function () {
+    stopAudio();
+    var b = BIZ[state.bizId];
+    var clip = b.clips["greeting" + (voiceSuffix() === "f" ? "F" : "M")];
+    audioQueue.push(clip);
+    playNext();
+  });
+
+  /* ---------- CRM payload interactions ---------- */
+  $("viewPayloadBtn").addEventListener("click", function () {
+    var modal = $("crmModal");
+    if (modal) modal.classList.toggle("hidden");
+  });
+  $("copyPayloadBtn").addEventListener("click", function () {
+    var json = $("crmJson").textContent;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(json).then(function () {
+        var btn = $("copyPayloadBtn");
+        btn.textContent = "Copied!";
+        setTimeout(function () { btn.textContent = "Copy JSON"; }, 2000);
+      });
+    }
+  });
+
+  /* ---------- Mic input (Web Speech API recognition) ---------- */
   var SR = window.SpeechRecognition || window.webkitSpeechRecognition || null;
   $("micBtn").addEventListener("click", function () {
     if (!SR) { alert("Speech recognition isn't available in this browser — please type instead. Chrome works best for the mic."); return; }

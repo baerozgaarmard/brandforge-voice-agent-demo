@@ -8,6 +8,7 @@
 *Instant conversational responses • Natural human vocal cadence • Sub-second slot filling • Zero robotic browser artifacts*
 
 [![Live Demo](https://img.shields.io/badge/Live_Demo-Vercel-10b981?style=for-the-badge&logo=vercel&logoColor=white)](https://brandforge-voice-agent-demo.vercel.app/)
+[![CI Status](https://img.shields.io/github/actions/workflow/status/baerozgaarmard/brandforge-voice-agent-demo/verify.yml?branch=main&style=for-the-badge&logo=githubactions&logoColor=white)](https://github.com/baerozgaarmard/brandforge-voice-agent-demo/actions)
 [![JavaScript](https://img.shields.io/badge/Code-Vanilla_ES6-f7df1e?style=for-the-badge&logo=javascript&logoColor=black)](#technical-architecture)
 [![Audio Clips](https://img.shields.io/badge/Audio_Catalog-38_Human_Clips-06b6d4?style=for-the-badge&logo=podcastaddict&logoColor=white)](#voice-system--audio-matrix)
 [![Deploy](https://img.shields.io/badge/Deploy-Zero_Backend-8b5cf6?style=for-the-badge&logo=fastapi&logoColor=white)](#quickstart)
@@ -27,8 +28,11 @@ For local service businesses (dental clinics, HVAC contractors, real estate brok
 
 **BrandForge Voice Agent** simulates an enterprise-ready AI receptionist built for high-conversion inbound client calls:
 - **Instant Call Engagement:** Simulates natural phone conversations using pre-rendered acoustic voice clips with **0ms speech synthesis lag**.
+- **Interactive One-Click Prompt Chips:** Test common inquiries (*"I'd like to book a cleaning"*, *"What are your hours?"*) with zero typing.
 - **Context-Aware Dialogue Engine:** Seamlessly navigates service selection, customer qualification, 10-digit phone extraction, and appointment booking.
 - **Asynchronous FAQ Interruption:** Callers can interrupt anytime to ask about business hours, pricing, or driving directions; the agent resolves the question instantly and gracefully resumes booking.
+- **Acoustic Waveform Visualizer & Voice Audition:** Real-time animated sound wave displays whenever the agent speaks, accompanied by a 2-second voice preview button.
+- **Owner SMS Alert & CRM Webhook:** Live simulated mobile notification and copyable JSON payload showing the data piped directly into HubSpot, GoHighLevel, or Zapier.
 - **"Your Own Voice" Voice Cloning:** Demonstrates an onboarding studio where local business owners record a 30-second voice sample to clone their own vocal identity for their business agent.
 
 ---
@@ -51,20 +55,22 @@ The application runs entirely client-side with zero external API dependencies, e
 ```mermaid
 flowchart LR
     subgraph Client["Browser Runtime (Zero Backend)"]
-        Caller["👤 Caller<br/>(Voice / Text)"]
-        InputLayer["🎙️ Web Speech API /<br/>Keyboard Input"]
+        Caller["👤 Caller<br/>(Voice / Text / Chips)"]
+        InputLayer["🎙️ Web Speech API /<br/>Prompt Chips / Keyboard"]
         StateEngine["🧠 Dialogue State Engine<br/>(app.js)"]
         SlotExtractor["🔍 Slot & Intent Extractor<br/>(Regex + Keywords)"]
         AudioPlayback["🎧 Clip Audio Queue<br/>(Sequential Playback)"]
         ApptHUD["📋 Live Reactive HUD<br/>(Appointment Panel)"]
+        SMSModal["📲 Owner SMS & CRM Payload<br/>(HubSpot / GHL JSON)"]
     end
 
-    Caller -->|Speaks / Types| InputLayer
+    Caller -->|Speaks / Clicks Chip| InputLayer
     InputLayer -->|Raw Utterance| StateEngine
     StateEngine -->|Parse Intent| SlotExtractor
     SlotExtractor -->|Update Lead Model| ApptHUD
+    ApptHUD -->|Trigger Confirmed Alert| SMSModal
     StateEngine -->|Queue Audio Keys| AudioPlayback
-    AudioPlayback -->|Acoustic Playback| Caller
+    AudioPlayback -->|Acoustic Playback + Wave Anim| Caller
 ```
 
 ---
@@ -91,7 +97,7 @@ stateDiagram-v2
         Phone --> Time: 10-Digit US Phone Captured (Plays 'ask-time')
         
         Time --> Time: FAQ / Time Clarification
-        Time --> Done: Appointment Time Scheduled (Plays 'confirm')
+        Time --> Done: Appointment Time Scheduled (Plays 'confirm' + Triggers Owner SMS)
     }
 
     Done --> Idle: Start New Call
@@ -105,6 +111,7 @@ stateDiagram-v2
    - **Name Recognizer:** Handles natural phrases (*"I'm John Doe"*, *"This is Sarah"*) and raw name inputs.
    - **Phone Normalizer:** Sanitizes US phone numbers into formatted `(XXX) XXX-XXXX` strings from numerical or written digits.
    - **Time Parser:** Extracts days and times (*"Tomorrow at 2 PM"*, *"Friday morning"*, *"Monday at 10 AM"*).
+3. **Owner Handoff & CRM Webhook:** On booking completion, triggers a simulated push notification showing the customer details and exposes the JSON payload sent downstream to business management tools.
 
 ---
 
@@ -170,12 +177,12 @@ During development, local diffusion-based voice synthesis was evaluated against 
 
 | Feature | Browser Demo (This Repo) | Enterprise Production Build |
 |---|---|---|
-| **Telephony Ingestion** | In-browser simulated mic & text console | Dedicated US Local / Toll-Free phone numbers via **Twilio / Telnyx** |
+| **Telephony Ingestion** | In-browser simulated mic, chips & text console | Dedicated US Local / Toll-Free phone numbers via **Twilio / Telnyx** |
 | **Orchestration** | Deterministic Client FSM (`app.js`) | Real-time voice orchestrator (**Vapi / Retell AI / LiveKit**) |
 | **Speech Generation** | 38 auditioned vocal clips | Real-time streaming TTS + **Custom Owner Voice Clones** |
 | **Calendar Booking** | Live reactive UI state display | Direct two-way sync with **Google Calendar, Cal.com, or Jobber / Acuity** |
-| **Caller Follow-up** | Simulated on-screen confirmation | Automated SMS confirmation & reminder dispatch via **Twilio Messaging** |
-| **CRM Integration** | Client-side memory | Real-time webhook dispatch into **HubSpot, GoHighLevel, or Salesforce** |
+| **Caller Follow-up** | Simulated on-screen confirmation & owner SMS | Automated SMS confirmation & reminder dispatch via **Twilio Messaging** |
+| **CRM Integration** | Copyable JSON payload | Real-time webhook dispatch into **HubSpot, GoHighLevel, or Salesforce** |
 
 ---
 
@@ -204,7 +211,7 @@ Double-click `index.html` to open directly in any modern browser.
 
 ---
 
-## 🧪 Automated Verification & Testing
+## 🧪 Automated Verification & CI
 
 Verify syntax and dialogue engine integrity with standard Node runtime checks:
 
@@ -214,17 +221,19 @@ node --check app.js
 node --check businesses.js
 ```
 
-### Dialogue State Flow Validation
-The demo exposes automated verification hooks on `window.__bfDemo`:
-- **State Transition Testing:** Validates stage progression from `idle` ➔ `reason` ➔ `name` ➔ `phone` ➔ `time` ➔ `done`.
-- **FAQ Interruption Testing:** Confirms that querying hours or pricing mid-flow does not corrupt captured customer parameters.
-- **Audio Integrity:** Confirms all 38 audio files return HTTP 200 without broken asset links.
+### GitHub Actions CI
+Every commit and pull request triggers [`.github/workflows/verify.yml`](.github/workflows/verify.yml) to continuously guarantee:
+- Clean syntax on all scripts (`node --check`).
+- Presence and integrity of all 38 production audio files in `audio/`.
 
 ---
 
 ## 📁 Repository Directory Structure
 
 ```
+├── .github/
+│   └── workflows/
+│       └── verify.yml       # Automated GitHub Actions CI workflow
 ├── audio/                   # 38 production-ready auditioned voice clips (.mp3)
 │   ├── auditions/           # Reference candidate vocal takes & test renders
 ├── docs/                    # Documentation visual assets & banners

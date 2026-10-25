@@ -1,0 +1,42 @@
+name: Verify & CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  verify:
+    name: Syntax & Asset Integrity
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Verify JavaScript Syntax
+        run: |
+          node --check app.js
+          node --check businesses.js
+          echo "✅ JavaScript syntax check passed."
+
+      - name: Verify 38 Audio Assets Integrity
+        run: |
+          count=$(find audio -maxdepth 1 -name "*.mp3" -type f | wc -l)
+          echo "Found $count audio clips in audio/ directory."
+          if [ "$count" -ne 38 ]; then
+            echo "❌ Error: Expected 38 audio clips, but found $count."
+            exit 1
+          fi
+
+          # Verify no 0-byte corrupted files
+          find audio -maxdepth 1 -name "*.mp3" -size 0 | grep . && {
+            echo "❌ Error: Found empty 0-byte audio files."
+            exit 1
+          } || echo "✅ All 38 audio files verified and non-empty."

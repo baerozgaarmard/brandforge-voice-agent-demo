@@ -32,6 +32,7 @@
   <div class="voice-block">
     <span class="field-label">Voice</span>
     <div id="voicePicker" class="tabs"></div>
+    <button id="previewVoiceBtn" class="btn btn-tiny btn-quiet" title="Audition current voice">▶ Preview</button>
   </div>
 </div>
 
@@ -50,7 +51,15 @@
   <section class="panel call-panel">
     <div class="call-head">
       <div>
-        <div id="callBizName" class="call-biz">—</div>
+        <div class="call-title-row">
+          <div id="callBizName" class="call-biz">—</div>
+          <div id="waveVisualizer" class="wave-visualizer hidden" title="Agent speaking">
+            <span class="wave-bar"></span>
+            <span class="wave-bar"></span>
+            <span class="wave-bar"></span>
+            <span class="wave-bar"></span>
+          </div>
+        </div>
         <div class="status-wrap">
           <span id="statusDot" class="status-dot"></span>
           <span id="callStatus" class="muted small">Not started</span>
@@ -67,6 +76,10 @@
       <button id="micBtn" class="btn btn-quiet" disabled>Mic</button>
       <button id="sendBtn" class="btn btn-accent" disabled>Send</button>
     </div>
+    <div id="quickChips" class="quick-chips hidden">
+      <span class="chips-label">Quick prompts:</span>
+      <div id="chipsContainer" class="chips-container"></div>
+    </div>
   </section>
 
   <aside class="panel appt-panel">
@@ -78,6 +91,20 @@
       <dt>Time</dt><dd id="leadTime">—</dd>
       <dt>Status</dt><dd id="leadBooking">Waiting</dd>
     </dl>
+    <div id="ownerAlert" class="owner-alert hidden">
+      <div class="owner-alert-head">
+        <span class="sms-badge">📲 Instant Owner SMS Alert</span>
+      </div>
+      <p id="ownerAlertText" class="owner-alert-body"></p>
+      <button id="viewPayloadBtn" class="btn btn-tiny btn-quiet">View CRM Payload</button>
+    </div>
+    <div id="crmModal" class="crm-modal hidden">
+      <div class="crm-modal-head">
+        <span class="muted small bold">Webhook JSON (HubSpot / GoHighLevel)</span>
+        <button id="copyPayloadBtn" class="btn btn-tiny btn-accent">Copy JSON</button>
+      </div>
+      <pre id="crmJson" class="crm-json"></pre>
+    </div>
   </aside>
 </main>
 
