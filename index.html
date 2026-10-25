@@ -3,7 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BrandForge — Voice Agent Demo</title>
+<title>BrandForge — AI Voice Receptionist Demo</title>
+<meta name="description" content="AI Phone Receptionist simulation for local businesses with natural acoustic voices, real-time slot filling, and appointment booking.">
+<meta name="theme-color" content="#2f5d50">
+<!-- Open Graph / Social Media Preview -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="BrandForge — AI Voice Receptionist Demo">
+<meta property="og:description" content="Simulated AI receptionist for dental, HVAC, real estate, and salon businesses. Natural pre-rendered acoustic voices with zero robotic lag.">
+<meta property="og:image" content="screenshot.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="BrandForge — AI Voice Receptionist Demo">
+<meta name="twitter:description" content="Simulated AI receptionist for local businesses with natural acoustic voices and live appointment booking.">
+<meta name="twitter:image" content="screenshot.png">
+<!-- Favicon SVG -->
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2250%22 fill=%22%232f5d50%22/><path d=%22M32 50 L45 63 L68 37%22 fill=%22none%22 stroke=%22white%22 stroke-width=%2210%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/></svg>">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -38,7 +51,10 @@
     <div class="call-head">
       <div>
         <div id="callBizName" class="call-biz">—</div>
-        <div id="callStatus" class="muted small">Not started</div>
+        <div class="status-wrap">
+          <span id="statusDot" class="status-dot"></span>
+          <span id="callStatus" class="muted small">Not started</span>
+        </div>
       </div>
       <div class="call-actions">
         <button id="startBtn" class="btn btn-accent">Start call</button>

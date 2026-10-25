@@ -180,6 +180,7 @@
     state.stage = "done";
     agentSay(b.confirm + " Summary: " + state.lead.service + " for " + state.lead.name + ", " + state.lead.time + ". A confirmation will be texted to " + state.lead.phone + ". Is there anything else I can help with?", ["confirm"]);
     $("callStatus").textContent = "Call complete — appointment confirmed";
+    updateStatusDot("done");
     updateAppt();
   }
   function handleUser(text) {
@@ -252,6 +253,12 @@
     }
   }
 
+  function updateStatusDot(mode) {
+    var dot = $("statusDot");
+    if (!dot) return;
+    dot.className = "status-dot" + (mode ? " " + mode : "");
+  }
+
   /* ---------- Call lifecycle ---------- */
   function setCallUI(active) {
     inputEl.disabled = !active;
@@ -259,6 +266,7 @@
     $("micBtn").disabled = !active;
     $("startBtn").classList.toggle("hidden", active);
     $("endBtn").classList.toggle("hidden", !active);
+    updateStatusDot(active ? "live" : (state.stage === "done" ? "done" : ""));
   }
   function resetCall() {
     stopAudio();
@@ -267,6 +275,7 @@
     state.stage = "idle";
     transcriptEl.innerHTML = "";
     setCallUI(false);
+    updateStatusDot("");
     $("callStatus").textContent = "Not started";
     updateAppt();
   }
@@ -283,6 +292,7 @@
     stopAudio();
     if (state.stage !== "done") state.stage = "ended";
     setCallUI(false);
+    updateStatusDot("");
     $("callStatus").textContent = "Call ended";
     updateAppt();
   }
