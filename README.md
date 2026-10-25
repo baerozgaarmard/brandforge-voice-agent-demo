@@ -2,21 +2,18 @@
 
 <img src="docs/assets/banner.svg" alt="BrandForge AI Voice Agent Banner" width="100%" />
 
-# BrandForge — AI Voice Receptionist Demo
-
-**An intelligent phone receptionist simulation tailored for local service businesses.**  
-*Instant conversational responses • Natural human vocal cadence • Sub-second slot filling • Zero robotic browser artifacts*
+<br/>
 
 [![Live Demo](https://img.shields.io/badge/Live_Demo-Vercel-10b981?style=for-the-badge&logo=vercel&logoColor=white)](https://brandforge-voice-agent-demo.vercel.app/)
 [![CI Status](https://img.shields.io/github/actions/workflow/status/baerozgaarmard/brandforge-voice-agent-demo/verify.yml?branch=main&style=for-the-badge&logo=githubactions&logoColor=white)](https://github.com/baerozgaarmard/brandforge-voice-agent-demo/actions)
 [![JavaScript](https://img.shields.io/badge/Code-Vanilla_ES6-f7df1e?style=for-the-badge&logo=javascript&logoColor=black)](#technical-architecture)
-[![Audio Clips](https://img.shields.io/badge/Audio_Catalog-38_Human_Clips-06b6d4?style=for-the-badge&logo=podcastaddict&logoColor=white)](#voice-system--audio-matrix)
-[![Deploy](https://img.shields.io/badge/Deploy-Zero_Backend-8b5cf6?style=for-the-badge&logo=fastapi&logoColor=white)](#quickstart)
+[![Audio Clips](https://img.shields.io/badge/Audio_Catalog-38_Clips-06b6d4?style=for-the-badge&logo=podcastaddict&logoColor=white)](#voice-system--audio-matrix)
+[![Zero Backend](https://img.shields.io/badge/Runtime-Zero_Backend-8b5cf6?style=for-the-badge)](#quickstart)
 [![License](https://img.shields.io/badge/License-MIT-slate?style=for-the-badge)](LICENSE)
 
 <br/>
 
-[**Explore Live Demo »**](https://brandforge-voice-agent-demo.vercel.app/) • [**View Architecture »**](#technical-architecture) • [**Audio Matrix »**](#voice-system--audio-matrix) • [**Production Bridge »**](#production-vs-demo-architecture)
+[**Live Demo**](https://brandforge-voice-agent-demo.vercel.app/) &nbsp;·&nbsp; [**Architecture**](#technical-architecture) &nbsp;·&nbsp; [**Audio Matrix**](#voice-system--audio-matrix) &nbsp;·&nbsp; [**Production Bridge**](#production-vs-demo-architecture)
 
 </div>
 
